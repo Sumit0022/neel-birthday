@@ -37,7 +37,7 @@ function Balloon({
     }
   });
 
-  const balloonMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+  const balloonMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
     color: color,
     roughness: 0.1,
     metalness: 0.3,
