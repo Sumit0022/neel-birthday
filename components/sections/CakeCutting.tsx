@@ -5,7 +5,6 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Sparkles, Float } from "@react-three/drei";
 import * as THREE from "three";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
@@ -24,7 +23,6 @@ const TOTAL_H = SPONGE_H * 2 + FILLING_H;
 // Slice faces the camera (Math.PI * 1.5 is pointing at +Z in our setup)
 const START_ANGLE = Math.PI * 1.35;
 const END_ANGLE = Math.PI * 1.65;
-const SLICE_ANGLE = END_ANGLE - START_ANGLE;
 
 // -- Materials --
 const COLOR_SPONGE = "#1f0904"; // Dark chocolate sponge

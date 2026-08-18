@@ -72,7 +72,7 @@ export default function MessageLine() {
 
   useEffect(() => {
     let frame: number;
-    let start = Date.now();
+    const start = Date.now();
 
     const animate = () => {
       if (!containerRef.current) return;

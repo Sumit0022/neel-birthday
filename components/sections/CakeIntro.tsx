@@ -12,7 +12,7 @@ export default function CakeIntro() {
         viewport={{ once: false, amount: 0.5 }}
         className="text-white font-serif italic text-4xl md:text-6xl tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
       >
-        Let's cut the cake
+        Let&apos;s cut the cake
       </motion.h2>
     </div>
   );
