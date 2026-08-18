@@ -5,8 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
+import { Sparkles } from "@react-three/drei";
 import { MathUtils } from "three";
 import * as THREE from "three";
 
@@ -64,10 +63,6 @@ export default function IntroScene() {
   const stageCtextRef = useRef<HTMLDivElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
-
-  const particlesInit = async (engine: any) => {
-    await loadSlim(engine);
-  };
 
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -174,20 +169,9 @@ export default function IntroScene() {
 
       {/* Ambient dark particles */}
       <div ref={particlesRef} className="absolute inset-0 z-10 pointer-events-none mix-blend-screen">
-        <Particles
-          id="tsparticles-dark"
-          init={particlesInit}
-          options={{
-              background: { color: { value: "transparent" } },
-              particles: {
-                number: { value: 60, density: { enable: true, area: 800 } },
-                color: { value: "#ffffff" },
-                opacity: { value: 0.2, random: true },
-                size: { value: 1.5, random: true },
-                move: { enable: true, speed: 0.3, direction: "none", random: true, straight: false, outModes: "out" }
-              }
-            }}
-          />
+        <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
+          <Sparkles count={60} scale={20} size={1.5} speed={0.3} opacity={0.2} color="#ffffff" />
+        </Canvas>
       </div>
 
       {/* Stage B/C 3D Background */}
