@@ -14,6 +14,14 @@ if (typeof window !== "undefined") {
 
 // ... existing geometry and decorators ...
 import { Fireworks } from "@fireworks-js/react";
+import { useThree } from "@react-three/fiber";
+
+function ResponsiveGroup({ children }: { children: React.ReactNode }) {
+  const { viewport } = useThree();
+  const isMobileView = viewport.width < 7;
+  const scale = isMobileView ? viewport.width / 7.5 : 1; 
+  return <group scale={scale}>{children}</group>;
+}
 
 // -- Geometry Constants --
 const CAKE_RADIUS = 2.2;
@@ -146,14 +154,14 @@ function CakeSection({ startA, endA, isSlice, cutStep }: { startA: number, endA:
   useFrame((state, delta) => {
     if (isSlice && groupRef.current) {
       if (cutStep >= 2) {
-        // Slide slice smoothly forward on the stand without falling off or dipping down
-        groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -0.8, delta * 4);
-        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 0, delta * 4);
+        // Slide slice smoothly forward (towards camera)
+        groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, 0, delta * 4);
+        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 1.0, delta * 4);
         groupRef.current.rotation.x = -Math.PI / 2; // Keep flat
       } else if (cutStep === 1) {
         // Slightly separate to show cut mark
-        groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -0.1, delta * 8);
-        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 0, delta * 8);
+        groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, 0, delta * 8);
+        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, 0.15, delta * 8);
         groupRef.current.rotation.x = -Math.PI / 2;
       } else {
         // Reset to original
@@ -418,8 +426,8 @@ export default function CakeCutting() {
 
       {/* 3D Scene */}
       <motion.div 
-        initial={{ y: "20vh", scale: 0.8, opacity: 0 }}
-        whileInView={{ y: 0, scale: 1, opacity: 1 }}
+        initial={{ scale: 0.85, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
         viewport={{ once: false, amount: 0.3 }}
         className="absolute inset-0 z-20 pointer-events-none"
@@ -433,9 +441,11 @@ export default function CakeCutting() {
           <Environment preset="city" />
           
           <Float speed={1.5} rotationIntensity={0.15} floatIntensity={0.2}>
-            <group position={[0, 1.2, 0]}>
-              <CakeScene cutStep={cutStep} onCut={handleCakeClick} />
-            </group>
+            <ResponsiveGroup>
+              <group position={[0, 1.2, 0]}>
+                <CakeScene cutStep={cutStep} onCut={handleCakeClick} />
+              </group>
+            </ResponsiveGroup>
           </Float>
           
           {/* Ambient Sparkles */}
